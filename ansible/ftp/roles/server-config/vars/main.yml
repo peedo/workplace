@@ -1,0 +1,32 @@
+---
+# vars file for common
+
+# Variables for rssh.conf
+# ---
+# Default tells the shell to allow sftp|scp|rsync
+rssh_allowcvs: False
+rssh_allowrdist: False
+rssh_allowrsync: True
+rssh_allowscp: True
+rssh_allowsftp: True
+
+# Tell rssh to use the user facility (log user-level messages) for logging to syslog
+rssh_logfacility: LOG_USER
+
+# Sets the umask value for file creations in the scp/sftp session.
+rssh_umask: '022'
+
+# Extra variables for chroot if needed
+#rssh_chrootpath: /usr/local/chroot
+#rssh_users:
+#  michpeedo:
+#    umask: '022'
+#    access_bits: '00001'
+#    path: /usr/local/chroot
+# ---
+ 
+# Users who get SSH access
+ssh_users:
+  - user1
+  - user2
+  - user3

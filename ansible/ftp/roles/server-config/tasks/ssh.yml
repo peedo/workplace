@@ -1,0 +1,32 @@
+---
+- name: ensure ssh package is installed
+  tags: openssh
+  yum:
+    pkg: openssh.x86_64
+    state: present
+    update_cache: yes
+  register: ssh_yum
+
+# copy sshd_config file before any changes
+- copy:
+    src: /etc/ssh/sshd_config
+    dest: /etc/ssh/sshd_config.ORIG
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  
+# lockdown sshd_config file permissions
+- file:
+    dest: /etc/ssh/sshd_config
+    backup: yes
+    owner: root
+    group: root
+    mode: "0644"
+
+# insert PasswordAuthentication yes into /etc/ssh/sshd_config
+- lineinfile:
+    dest: /etc/ssh/sshd_config
+    insertafter: '^# To disable tunneled clear text passwords, change to no here!'
+    line: 'PasswordAuthentication yes'
+  notify: start ssh

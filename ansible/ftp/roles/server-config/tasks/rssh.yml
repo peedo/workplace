@@ -1,0 +1,25 @@
+---
+- name: ensure rssh package is installed
+  tags: rssh
+  yum:
+    pkg: rssh
+    state: present
+    update_cache: yes
+  register: rssh_yum
+
+- block:
+  - name: insert rssh into /etc/shells
+    lineinfile:
+      dest: /etc/shells
+      line: '/user/bin/rssh'
+
+  - name: apply rssh configurtaion
+    template:
+      src: rssh.conf.j2
+      dest: /etc/rssh.conf
+      owner: root
+      group: root
+      mode: 0644
+    tags: rssh
+    notify: reload ssh
+    when: rssh_yum|success

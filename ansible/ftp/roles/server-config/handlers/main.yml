@@ -1,0 +1,12 @@
+---
+# handlers file for common
+
+- name: start ssh
+  service:
+    name: sshd
+    state: started
+
+- name: reload ssh
+  service:
+    name: sshd
+    state: reload

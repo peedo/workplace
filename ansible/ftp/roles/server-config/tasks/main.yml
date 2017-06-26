@@ -1,0 +1,10 @@
+---
+# tasks file for common
+- name: install epel repo
+  yum:
+    name: epel-release
+    state: present
+
+- include: users.yml
+- include: ssh.yml
+- include: rssh.yml

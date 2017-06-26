@@ -1,0 +1,18 @@
+---
+# add user with rssh shell, appending the group 'rsshusers' to the user's groups
+- user:
+    name: "{{ item }}"
+    shell: /usr/bin/rssh
+    groups: "rsshusers"
+    append: yes
+  with_items: "{{ ssh_users }}"
+
+# create a 4096-bit SSH key for user ~<user>/.ssh/id_rsa
+- user:
+    name: "{{ item }}"
+    state: present
+    generate_ssh_key: yes
+    ssh_key_type: rsa
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_rsa
+  with_items: "{{ ssh_users }}"

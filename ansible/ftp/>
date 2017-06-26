@@ -1,0 +1,23 @@
+---
+- name: ensure ssh package is installed
+  tags: openssh
+  yum:
+    pkg: openssh.x86_64
+    state: present
+    update_cache: yes
+  register: ssh_yum
+
+- name: backup and lockdown config file permissions
+  template:
+    dest: /etc/ssh/sshd_config
+    backup: yes
+    owner: root
+    group: root
+    mode: "0644"
+
+# insert PasswordAuthentication yes into /etc/ssh/sshd_config
+- lineinfile:
+    dest: /etc/ssh/sshd_config
+    insertafter: '^# To disable tunneled clear text passwords, change to no here!'
+    line: 'PasswordAuthentication yes'
+  notify: start ssh
